@@ -11,7 +11,8 @@
 # GNU General Public License for more details.
 import certstream
 import tqdm
-
+import typos
+import homoglyphs
 import entropy
 
 log_suspicious = 'suspicious_domains.log'
@@ -34,31 +35,22 @@ suspicious_keywords = [
     'transaction',
     'recover',
     'live',
-    'office'
+    'office',
+    'transfer',
+    'secure',
+    'card',
+    'credit',
+    'bank',
+    'fraud',
+    'capital',
+    'one'
     ]
 
 highly_suspicious = [
-    'paypal',
-    'paypol',
-    'poypal',
-    'twitter',
-    'appleid',
-    'gmail',
-    'outlook',
-    'protonmail',
-    'amazon',
-    'facebook',
-    'microsoft',
-    'windows',
-    'cgi-bin',
-    'localbitcoin',
-    'icloud',
-    'iforgot',
-    'isupport',
-    'kraken',
-    'bitstamp',
-    'bittrex',
-    'blockchain',
+    'capitalone',
+    'capital-one',
+    'spark',
+    'venture',
     '.com-',
     '-com.',
     '.net-',
@@ -104,7 +96,8 @@ suspicious_tld = [
     '.vip',
     '.party',
     '.tech',
-    '.science'
+    '.science',
+    '.ru'
     ]
 
 pbar = tqdm.tqdm(desc='certificate_update', unit='cert')
@@ -127,10 +120,13 @@ def score_domain(domain):
             score += 20
     for keyword in suspicious_keywords:
         if keyword in domain:
-            score += 25
+            score += 30
     for keyword in highly_suspicious:
         if keyword in domain:
             score += 60
+    for keyword in typos.list:
+        if keyword in domain:
+            score += 80
     score += int(round(entropy.shannon_entropy(domain)*50))
 
     # Lots of '-' (ie. www.paypal-datacenter.com-acccount-alert.com)
