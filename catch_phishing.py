@@ -12,7 +12,7 @@
 import certstream
 import tqdm
 import typos
-import homoglyphs
+# import homoglyphs
 import entropy
 
 log_suspicious = 'suspicious_domains.log'
@@ -127,9 +127,9 @@ def score_domain(domain):
     for keyword in typos.list:
         if keyword in domain:
             score += 70
-    for keyword in homoglyphs.list:
-        if keyword in domain:
-            score += 80
+    # for keyword in homoglyphs.list:
+    #     if keyword in domain:
+    #         score += 80
     score += int(round(entropy.shannon_entropy(domain)*50))
 
     # Lots of '-' (ie. www.paypal-datacenter.com-acccount-alert.com)
