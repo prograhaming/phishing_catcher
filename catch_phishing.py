@@ -126,6 +126,9 @@ def score_domain(domain):
             score += 60
     for keyword in typos.list:
         if keyword in domain:
+            score += 70
+    for keyword in homoglyphs.list:
+        if keyword in domain:
             score += 80
     score += int(round(entropy.shannon_entropy(domain)*50))
 
